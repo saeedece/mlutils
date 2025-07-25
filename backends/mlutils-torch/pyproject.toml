@@ -1,0 +1,19 @@
+[project]
+name = "mlutils-torch"
+version = "0.1.0"
+description = "Personal utilities for writing PyTorch."
+readme = "README.md"
+authors = [
+    { name = "saeed", email = "git@saeedc.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.10.3",
+    "numpy>=2.3.1",
+    "tensorboard>=2.20.0",
+    "torch>=2.7.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

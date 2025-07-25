@@ -1,0 +1,29 @@
+[project]
+name = "mlutils"
+version = "0.1.0"
+description = "Personal utilities for ML research."
+readme = "README.md"
+authors = [
+    { name = "saeedece", email = "git@saeedc.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+torch = [
+    "mlutils-torch",
+]
+jax = [
+    "mlutils-jax",
+]
+
+[tool.uv.sources]
+mlutils-torch = { workspace = true }
+mlutils-jax = { workspace = true }
+
+[tool.uv.workspace]
+members = ["backends/*"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
