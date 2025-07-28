@@ -23,14 +23,19 @@ def parse_cmdline_string(s: str) -> Any:
 def load_config(parser: argparse.ArgumentParser | None) -> dict[str, Any]:
     parser = parser or DEFAULT_PARSER
     args, uargs = parser.parse_known_args()
-    with open(args.config_file, mode="rb") as f:
-        config = tomllib.load(f)
 
-    # override config file with command line args
+    if hasattr(args, "config_file"):
+        with open(args.config_file, mode="rb") as f:
+            config = tomllib.load(f)
+    else:
+        config = {}
+
+    args = [(key.split("."), value) for key, value in vars(args).items()]
     uargs = zip(uargs[::2], uargs[1::2])
     uargs = [(key[2:].split("."), parse_cmdline_string(value)) for key, value in uargs]
+    args = args + uargs
 
-    for keys, value in uargs:
+    for keys, value in args:
         if len(keys) == 1:
             config[keys[0]] = value
         elif len(keys) == 2:
