@@ -1,7 +1,7 @@
 import time
 from contextlib import contextmanager, nullcontext
 from pathlib import Path
-from typing import Any
+from typing import Any, NamedTuple
 
 import torch
 import torch.distributed as dist
@@ -9,14 +9,19 @@ import torch.distributed as dist
 from mlutils.logging import logger
 
 
-@contextmanager
-def maybe_enable_profiling(config: dict[str, Any], step: int = 0):
-    enable = config["enable"]
+class ProfilingConfig:
+    enable: bool
+    trace_folder_path: Path
+    frequency: int
 
+
+@contextmanager
+def maybe_enable_profiling(config: ProfilingConfig, step: int = 0):
+    enable = config.enable
     if enable:
-        trace_folder = Path(config["trace_folder"])
+        trace_folder = config.trace_folder_path
         trace_folder.mkdir(parents=True, exist_ok=True)
-        frequency = config["frequency"]
+        frequency = config.frequency
 
         rank = dist.get_rank()
 

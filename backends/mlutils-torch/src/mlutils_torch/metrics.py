@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, override
+from typing import Any, override, NamedTuple
 
 import numpy as np
 import numpy.typing as npt
@@ -11,17 +11,21 @@ from torch._utils import _get_available_device_type, _get_device_module  # pyrig
 from mlutils.metrics import DeviceStats
 
 
+class TensorboardLoggerConfig(NamedTuple):
+    enable_tensorboard: bool
+
+
 class TensorboardLogger:
     def __init__(
         self,
-        config: dict[str, Any],
+        config: TensorboardLoggerConfig,
         log_path: Path,
         tag: str | None = None,
     ) -> None:
         self.tag = tag
         self.writer = (
             SummaryWriter(log_path, max_queue=1000)
-            if config["enable_tensorboard"]
+            if config.enable_tensorboard
             else None
         )
 

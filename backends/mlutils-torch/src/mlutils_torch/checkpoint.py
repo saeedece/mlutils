@@ -4,7 +4,7 @@ from concurrent.futures import Future
 from copy import deepcopy
 from functools import partial
 from pathlib import Path
-from typing import Any, override
+from typing import Any, NamedTuple, override
 
 import torch
 import torch.distributed as dist
@@ -100,20 +100,26 @@ class SchedulerContainer(Stateful):
             scheduler.load_state_dict(deepcopy(state_dict))
 
 
+class CheckpointConfig(NamedTuple):
+    folder_path: Path
+    interval: int
+    model_only: bool
+
+
 class CheckpointManager:
     def __init__(
         self,
         model: ModelContainer,
         optimizer: OptimizerContainer,
         scheduler: SchedulerContainer,
-        config: dict[str, Any],
+        config: CheckpointConfig,
     ) -> None:
         # load data from config
-        self.folder = Path(config["checkpoint_folder"])
-        self.folder.mkdir(parents=True, exist_ok=True)
-        self.interval = config["interval"]
+        self.folder_path = config.folder_path
+        self.folder_path.mkdir(parents=True, exist_ok=True)
+        self.interval = config.interval
 
-        if config["model_only"]:
+        if config.model_only:
             self.states = {"model": model}
         else:
             self.states = {

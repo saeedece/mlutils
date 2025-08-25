@@ -1,19 +1,25 @@
 import time
 from contextlib import contextmanager, nullcontext
 from pathlib import Path
-from typing import Any
+from typing import Any, NamedTuple
 
 import jax
 
 
+class ProfilingConfig:
+    enable: bool
+    trace_folder_path: Path
+    frequency: int
+
+
 @contextmanager
-def maybe_enable_profiling(config: dict[str, Any], step: int = 0):
-    enable = config["enable"]
+def maybe_enable_profiling(config: ProfilingConfig, step: int = 0):
+    enable = config.enable
 
     if enable:
-        trace_folder = Path(config["trace_folder"])
+        trace_folder = Path(config.trace_folder_path)
         trace_folder.mkdir(parents=True, exist_ok=True)
-        frequency = config["frequency"]
+        frequency = config.frequency
         yield jax.profiler.trace(log_dir=trace_folder)
 
     else:
