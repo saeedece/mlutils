@@ -13,18 +13,18 @@ from mlutils.metrics import DeviceStats
 
 class TensorboardLoggerConfig(NamedTuple):
     enable_tensorboard: bool
+    dir_path: Path
 
 
 class TensorboardLogger:
     def __init__(
         self,
         config: TensorboardLoggerConfig,
-        log_path: Path,
         tag: str | None = None,
     ) -> None:
         self.tag = tag
         self.writer = (
-            SummaryWriter(log_path, max_queue=1000)
+            SummaryWriter(config.dir_path, max_queue=1000)
             if config.enable_tensorboard
             else None
         )
