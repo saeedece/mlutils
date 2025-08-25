@@ -4,14 +4,6 @@ import tomllib
 from pathlib import Path
 from typing import Any
 
-DEFAULT_PARSER = argparse.ArgumentParser()
-_ = DEFAULT_PARSER.add_argument(
-    "--config_file",
-    type=Path,
-    required=True,
-    help="Path to configuration file (prefer absolute paths)",
-)
-
 
 def parse_cmdline_string(s: str) -> Any:
     try:
@@ -20,8 +12,7 @@ def parse_cmdline_string(s: str) -> Any:
         return s
 
 
-def load_config(parser: argparse.ArgumentParser | None) -> dict[str, Any]:
-    parser = parser or DEFAULT_PARSER
+def load_config(parser: argparse.ArgumentParser) -> dict[str, Any]:
     args, uargs = parser.parse_known_args()
 
     if hasattr(args, "config_file"):
