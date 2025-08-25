@@ -1,7 +1,7 @@
 import time
 from contextlib import contextmanager, nullcontext
 from pathlib import Path
-from typing import Any, NamedTuple
+from typing import NamedTuple
 
 import torch
 import torch.distributed as dist
@@ -9,7 +9,7 @@ import torch.distributed as dist
 from mlutils.logging import logger
 
 
-class ProfilingConfig:
+class ProfilingConfig(NamedTuple):
     enable: bool
     trace_folder_path: Path
     frequency: int

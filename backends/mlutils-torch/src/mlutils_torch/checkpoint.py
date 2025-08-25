@@ -174,6 +174,9 @@ class CheckpointManager:
         states = self._states_to_load()
         dcp.load(states, checkpoint_id=checkpoint_id)
         GarbageCollector.collect("GC collection invoked by checkpointer.")
+        logger.info(
+            f"Finished loading checkpoint in {time.monotonic() - begin:.2f} seconds."
+        )
         return True
 
     def _async_wait(self) -> None:

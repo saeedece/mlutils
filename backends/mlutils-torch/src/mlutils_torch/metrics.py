@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, override, NamedTuple
+from typing import Any, NamedTuple
 
 import numpy as np
 import numpy.typing as npt

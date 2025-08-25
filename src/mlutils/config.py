@@ -1,7 +1,6 @@
 import argparse
 import ast
 import tomllib
-from pathlib import Path
 from typing import Any
 
 

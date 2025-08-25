@@ -1,5 +1,4 @@
-from pathlib import Path
-from typing import Any, NamedTuple
+from typing import NamedTuple
 
 
 class DeviceStats(NamedTuple):
